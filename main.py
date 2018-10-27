@@ -29,22 +29,23 @@ class IPv4:
         return temp_bits
 
     def broadcast(self):
-        # working on how to invert the bits
-        # clarify again, especially for [1:9]
-        # octet_bits = self.netmask("netmask.yml")
-        # binary = bin(int(octet_bits[3])).lstrip("0b")
-        # inverted = bin(self.flip_bits(0,8, 128)).lstrip("0b")[1:9]
-        # print ("binary  {}".format(binary))
-        # print inverted
-        pass
+        octets = self.netmask("netmask.yml")
+        oct_idx = 1
+        for o in octets:
+            bits = "{:0>8}".format(bin(int(o)).lstrip("0b"))
+            bit_idx = 8
+            for b in bits:
+                if b == "0":
+                    print "octet={}, index={}".format(oct_idx, bit_idx)
+                bit_idx = bit_idx - 1
+            oct_idx = oct_idx + 1
 
     def network(self):
         # version 2
         netmask_octets = []
         octet_bits = self.netmask("netmask.yml")
         for idx in range(4):
-            netmask_octets.append(int(octet_bits[idx]) & int(self.octets[idx]))
-
+            netmask_octets.append(int(octet_bits[idx]) & int(self.octets[idx]))     # Logical AND operation
         return "{}.{}.{}.{}/{}".format(netmask_octets[0],
                                        netmask_octets[1],
                                        netmask_octets[2],
@@ -87,10 +88,8 @@ class IPv4:
 
 
 # Main Concept
-dest = IPv4("192.168.1.0/25")
-test = "11111110"
-dest.flip_bits(test)
-
+dest = IPv4("192.168.1.10/17")
+dest.broadcast()
 # print (dest.network())
 # print (dest.netmask("netmask.yml"))
 # print (dest.reverse())
