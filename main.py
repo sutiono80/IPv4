@@ -27,7 +27,7 @@ class IPv4:
                 temp_bits.append("1")
         return temp_bits
 
-    def broadcast(self):
+    def host_bits(self):
         octets = self.netmask("netmask.yml")
         oct_idx = 1
         for o in octets:
@@ -88,7 +88,7 @@ class IPv4:
 
 # Main Concept
 dest = IPv4("192.168.1.10/13")
-dest.broadcast()
+dest.host_bits()
 # print (dest.network())
 # print (dest.netmask("netmask.yml"))
 # print (dest.reverse())
