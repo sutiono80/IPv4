@@ -31,7 +31,7 @@ class IPv4:
         octets = self.netmask("netmask.yml")
         oct_idx = 1
         for o in octets:
-            bits = "{:0>8}".format(bin(int(o)).lstrip("0b"))
+            bits = "{:0>8}".format(bin(int(o)).lstrip("0b"))            # padding to prevent 0 become ""
             bit_idx = 8
             for b in bits:
                 if b == "0":
@@ -87,7 +87,7 @@ class IPv4:
 
 
 # Main Concept
-dest = IPv4("192.168.1.10/17")
+dest = IPv4("192.168.1.10/13")
 dest.broadcast()
 # print (dest.network())
 # print (dest.netmask("netmask.yml"))
