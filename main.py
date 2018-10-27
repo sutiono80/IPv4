@@ -6,48 +6,53 @@ import math
 
 
 class IPv4:
+    def __init__(self, address):
+        # construct prefix & octets within network subnet
+        subnet = address.split("/")[0]
+        self.prefix = int(address.split("/")[1])
+        self.octets = tuple(subnet.split("."))
 
-	def __init__(self, address):
-		# construct prefix & octets within network subnet
-		subnet = address.split("/")[0]
-		self.prefix = int(address.split("/")[1])
-		self.octets = tuple(subnet.split("."))
+    def netmask(self, files):
+        netmask_data = open(files, 'r')
+        octets = (yaml.load(netmask_data)[self.prefix]).split(".")
+        return octets
 
-	def netmask(self, files):
-		netmask_data = open(files, 'r')
-		octets = (yaml.load(netmask_data)[self.prefix]).split(".")
-		return octets
+    @staticmethod
+    def flip_bits(bits):
 
-	@staticmethod
-	def flip_bits(start, end, val):
-		mask = (math.pow(2, end+1) - 1 - (math.pow(2, start) - 1))
-		final_num = val ^ int (mask)
-		return final_num
+        temp_bits = []
+        for b in bits:
+            if b == "1":
+                temp_bits.append("0")
+            else:
+                temp_bits.append("1")
+        return temp_bits
 
-	def broadcast(self):
-		# working on how to invert the bits
-		# clarify again, especially for [1:9]
-		octet_bits = self.netmask("netmask.yml")
-		binary = bin(int(octet_bits[3])).lstrip("0b")
-		inverted = bin(self.flip_bits(0,8, 128)).lstrip("0b")[1:9]
-		print ("binary  {}".format(binary))
-		print inverted
+    def broadcast(self):
+        # working on how to invert the bits
+        # clarify again, especially for [1:9]
+        # octet_bits = self.netmask("netmask.yml")
+        # binary = bin(int(octet_bits[3])).lstrip("0b")
+        # inverted = bin(self.flip_bits(0,8, 128)).lstrip("0b")[1:9]
+        # print ("binary  {}".format(binary))
+        # print inverted
+        pass
+
+    def network(self):
+        # version 2
+        netmask_octets = []
+        octet_bits = self.netmask("netmask.yml")
+        for idx in range(4):
+            netmask_octets.append(int(octet_bits[idx]) & int(self.octets[idx]))
+
+        return "{}.{}.{}.{}/{}".format(netmask_octets[0],
+                                       netmask_octets[1],
+                                       netmask_octets[2],
+                                       netmask_octets[3],
+                                       self.prefix)
 
 
-	def network(self):
-		# version 2
-		netmask_octets = []
-		octet_bits = self.netmask("netmask.yml")
-		for idx in range(4):
-			netmask_octets.append(int(octet_bits[idx]) & int(self.octets[idx]))
-
-		return "{}.{}.{}.{}/{}".format(netmask_octets[0],
-										netmask_octets[1],
-										netmask_octets[2],
-										netmask_octets[3],
-										self.prefix)
-
-#	def network(self):
+# def network(self):
 #       # Version 1
 #		once = False
 #		full_bit = 255
@@ -83,7 +88,9 @@ class IPv4:
 
 # Main Concept
 dest = IPv4("192.168.1.0/25")
+test = "11111110"
+dest.flip_bits(test)
+
 # print (dest.network())
 # print (dest.netmask("netmask.yml"))
-print (dest.broadcast())
 # print (dest.reverse())
