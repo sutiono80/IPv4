@@ -53,15 +53,11 @@ class IPv4:
 
     def network(self):
         # version 2
-        netmask_octets = []
+        netw_octets = []
         nmsk_bits = self.netmask("netmask.yml")
         for idx in range(4):
-            netmask_octets.append(int(nmsk_bits[idx]) & int(self.octets[idx]))     # Logical AND operation
-        return "{}.{}.{}.{}/{}".format(netmask_octets[0],
-                                       netmask_octets[1],
-                                       netmask_octets[2],
-                                       netmask_octets[3],
-                                       self.cidr)
+            netw_octets.append(int(nmsk_bits[idx]) & int(self.octets[idx]))     # Logical AND operation
+        return netw_octets
 
     def broadcast(self):
         bcst_octets = []
@@ -75,7 +71,7 @@ class IPv4:
 #		once = False
 #		full_bit = 255
 #		net_bits = []
-#		netmask_octets = []
+#		netw_octets = []
 #		host_bits_idx = self.cidr % 8                         # to determine host bits
 #		num_net_bits = self.cidr / 8                          # to determine number of full wildcard bits (255)
 #		mask_data = open('bits.yml', 'r')                       # open the file contains host bits index
@@ -94,13 +90,13 @@ class IPv4:
 #
 #		# to determine network address value for each octets
 #		for idx in range(4):
-#			netmask_octets.append(net_bits[idx] & int(self.octets[idx]))
+#			netw_octets.append(net_bits[idx] & int(self.octets[idx]))
 #
 #		# final
-#		return "{}.{}.{}.{}/{}".format(netmask_octets[0],
-#										netmask_octets[1],
-#										netmask_octets[2],
-#										netmask_octets[3],
+#		return "{}.{}.{}.{}/{}".format(netw_octets[0],
+#										netw_octets[1],
+#										netw_octets[2],
+#										netw_octets[3],
 #										self.cidr)
 
 
