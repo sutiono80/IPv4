@@ -48,7 +48,6 @@ class IPv4:
                     temp_bits = temp_bits + "1"
                 else:
                     temp_bits = temp_bits + "0"
-            # hb_mask.append(temp_bits)
             hb_mask.append(str(int(temp_bits,2)))
         return hb_mask
 
