@@ -1,19 +1,19 @@
 # URL
-# https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the-prefix-network-subnet-and-host-numbers
+# https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the.prefix-network-subnet-and-host-numbers
 
 import yaml
 
 
 class IPv4:
     def __init__(self, address):
-        # construct prefix & octets within network subnet
+        # construct.cidr & octets within network subnet
         subnet = address.split("/")[0]
-        self.prefix = int(address.split("/")[1])
+        self.cidr = int(address.split("/")[1])
         self.octets = tuple(subnet.split("."))
 
     def netmask(self, files):
         netmask_data = open(files, 'r')
-        octets = (yaml.load(netmask_data)[self.prefix]).split(".")
+        octets = (yaml.load(netmask_data)[self.cidr]).split(".")
         return octets
 
     @staticmethod
@@ -48,7 +48,7 @@ class IPv4:
                     temp_bits = temp_bits + "1"
                 else:
                     temp_bits = temp_bits + "0"
-            hb_mask.append(str(int(temp_bits,2)))
+            hb_mask.append(str(int(temp_bits, 2)))
         return hb_mask
 
     def network(self):
@@ -61,7 +61,7 @@ class IPv4:
                                        netmask_octets[1],
                                        netmask_octets[2],
                                        netmask_octets[3],
-                                       self.prefix)
+                                       self.cidr)
 
     def broadcast(self):
         bcst_octets = []
@@ -76,8 +76,8 @@ class IPv4:
 #		full_bit = 255
 #		net_bits = []
 #		netmask_octets = []
-#		host_bits_idx = self.prefix % 8                         # to determine host bits
-#		num_net_bits = self.prefix / 8                          # to determine number of full wildcard bits (255)
+#		host_bits_idx = self.cidr % 8                         # to determine host bits
+#		num_net_bits = self.cidr / 8                          # to determine number of full wildcard bits (255)
 #		mask_data = open('bits.yml', 'r')                       # open the file contains host bits index
 #		host_mask_bit = yaml.load(mask_data)[host_bits_idx]     # to determine host bits
 #
@@ -101,7 +101,7 @@ class IPv4:
 #										netmask_octets[1],
 #										netmask_octets[2],
 #										netmask_octets[3],
-#										self.prefix)
+#										self.cidr)
 
 
 # Main Concept
