@@ -18,7 +18,7 @@ class IPv4:
 
     @staticmethod
     def flip_bits(bits):
-
+        # working
         temp_bits = []
         for b in bits:
             if b == "1":
@@ -27,17 +27,30 @@ class IPv4:
                 temp_bits.append("1")
         return temp_bits
 
-    def host_bits(self):
+    @staticmethod
+    def bit_format(decstr):
+        return "{:0>8}".format(bin(int(decstr)).lstrip("0b"))
+
+    def in_bits(self, octets):
+        print "{}.{}.{}.{}".format(self.bit_format(octets[0]),
+                                   self.bit_format(octets[1]),
+                                   self.bit_format(octets[2]),
+                                   self.bit_format(octets[3]))
+
+    def host_bit_mask(self):
         octets = self.netmask("netmask.yml")
-        oct_idx = 1
+        hb_mask = []
         for o in octets:
-            bits = "{:0>8}".format(bin(int(o)).lstrip("0b"))            # padding to prevent 0 become ""
-            bit_idx = 8
+            bits = self.bit_format(o)                                     # padding to prevent 0 become ""
+            temp_bits = ""
             for b in bits:
                 if b == "0":
-                    print "octet={}, index={}".format(oct_idx, bit_idx)
-                bit_idx = bit_idx - 1
-            oct_idx = oct_idx + 1
+                    temp_bits = temp_bits + "1"
+                else:
+                    temp_bits = temp_bits + "0"
+            # hb_mask.append(temp_bits)
+            hb_mask.append(str(int(temp_bits,2)))
+        return hb_mask
 
     def network(self):
         # version 2
@@ -50,6 +63,11 @@ class IPv4:
                                        netmask_octets[2],
                                        netmask_octets[3],
                                        self.prefix)
+    def broadcast(self):
+        bcst_octets = []
+        for idx in range(4):
+            bcst_octets.append(int(self.octets[idx]) | int(self.host_bit_mask()[idx]))
+        return bcst_octets
 
 
 # def network(self):
@@ -87,8 +105,8 @@ class IPv4:
 
 
 # Main Concept
-dest = IPv4("192.168.1.10/13")
-dest.host_bits()
-# print (dest.network())
+dest = IPv4("192.168.1.10/26")
+print (dest.network())
+print (dest.broadcast())
 # print (dest.netmask("netmask.yml"))
 # print (dest.reverse())
