@@ -55,14 +55,15 @@ class IPv4:
     def network(self):
         # version 2
         netmask_octets = []
-        octet_bits = self.netmask("netmask.yml")
+        nmsk_bits = self.netmask("netmask.yml")
         for idx in range(4):
-            netmask_octets.append(int(octet_bits[idx]) & int(self.octets[idx]))     # Logical AND operation
+            netmask_octets.append(int(nmsk_bits[idx]) & int(self.octets[idx]))     # Logical AND operation
         return "{}.{}.{}.{}/{}".format(netmask_octets[0],
                                        netmask_octets[1],
                                        netmask_octets[2],
                                        netmask_octets[3],
                                        self.prefix)
+
     def broadcast(self):
         bcst_octets = []
         for idx in range(4):
