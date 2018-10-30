@@ -1,4 +1,5 @@
 import yaml
+import os
 
 # https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the.prefix-network-subnet-and-host-numbers
 class IPv4:
@@ -70,3 +71,67 @@ class IPv4:
 		last.pop(3)
 		last.append(self.broadcast()[3] - 1)
 		return first, last
+
+class Cell:
+
+	def __init__(self, field, value):
+		self.field = field
+		self.value = value
+
+	def set_cell(self):
+		return '{:{align}{width}}'.format(self.value, align='<', width=self.field['width'])
+
+
+class Field:
+
+	def __init__(self, name, width):
+		self.name = name
+		self.width = width
+
+	def set_field(self):
+		return '{:{align}{width}}'.format(self.name, align='<', width=self.width)
+
+
+class Table:
+
+	def __init__(self, schema):
+		data = open(schema, 'r')
+		schema = yaml.load(data)
+		data.close()
+		self.schema = schema
+
+	def sline(self):
+		border = ''
+		return '{:-{align}{width}}'.format(border, align='<', width=str(self.schema['width']))
+
+	def dline(self):
+		border = ''
+		return '{:={align}{width}}'.format(border, align='<', width=str(self.schema['width']))
+
+	def stitle(self):
+		os.system('clear')
+		return '{:{align}{width}}\n'.format(self.schema['title'], align='^', width=str(self.schema['width']))
+
+	def columns(self):
+		# instantiate field object
+		num = len(self.schema['fields'])
+		fields = list()
+		for item in range(num):
+			name = self.schema['fields'][item]['name']
+			width = self.schema['fields'][item]['width']
+			fields.append(Field(name, width))
+
+		# taylor set of fields into columns
+		line = str()
+		for item in fields:
+			tmp = item.set_field()
+			line += tmp
+		return line
+
+	@staticmethod
+	def rows(cells):
+
+		line = str()
+		for item in cells:
+			line += item.set_cell()
+		return line
