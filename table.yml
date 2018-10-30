@@ -1,0 +1,11 @@
+title: 'List of Networks'
+width: 100
+fields:
+ - name: '#'
+   width: 5
+ - name: 'NETWORK'
+   width: 30
+ - name: 'RANGE USABLE IP ADDRESS'
+   width: 45
+ - name: 'BROADCAST'
+   width: 20
