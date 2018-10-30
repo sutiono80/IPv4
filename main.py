@@ -1,7 +1,7 @@
 # URL
 # https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the.prefix-network-subnet-and-host-numbers
 
-from PYIPv4 import IPv4
+from PYsutiono import IPv4, Table, Field, Cell
 
 
 # Main Concept
