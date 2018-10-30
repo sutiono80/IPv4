@@ -1,9 +1,6 @@
-# URL
-# https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the.prefix-network-subnet-and-host-numbers
-
 import yaml
 
-
+# https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the.prefix-network-subnet-and-host-numbers
 class IPv4:
 	def __init__(self, address):
 		# construct.cidr & octets within network subnet
